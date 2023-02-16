@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Declare this file as a POM file for Maven -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<!-- Declare the version of the POM format used in this file -->
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Declare the parent POM that this POM extends -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.0.2</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<!-- Declare the group ID, artifact ID, and version of the project -->
+	<groupId>com.ekingunoncu</groupId>
+	<artifactId>converter</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<!-- Declare the name and description of the project -->
+	<name>converter</name>
+	<description>assignment</description>
+
+	<!-- Declare properties used in this POM -->
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+
+	<!-- Declare the dependencies used in this project -->
+	<dependencies>
+		<!-- Spring Boot dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- JavaCV dependencies -->
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv-platform</artifactId>
+			<version>1.5.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv</artifactId>
+			<version>1.5.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacpp</artifactId>
+			<version>1.5.8</version>
+		</dependency>
+
+		<!-- Lombok dependency for generating boilerplate code -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Spring Boot test dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Apache Commons Boot test dependencies -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+
+	</dependencies>
+
+	<!-- Declare the Maven build configuration -->
+	<build>
+		<!-- Declare the Maven plugins used in the build process -->
+		<plugins>
+			<!-- Spring Boot Maven plugin for building executable JAR files -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
