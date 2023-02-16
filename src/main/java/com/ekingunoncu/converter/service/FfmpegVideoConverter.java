@@ -51,11 +51,7 @@ public class FfmpegVideoConverter implements VideoConverter {
         } catch (Exception e) {
             throw new VideoConversionException("Failed to convert video", e);
         } finally {
-            try {
-                closeResources(grabber, recorder);
-            } catch (Exception e) {
-                throw new VideoConversionException("Failed to release FFmpeg resources", e);
-            }
+            closeResources(grabber, recorder);
         }
     }
 
@@ -94,7 +90,7 @@ public class FfmpegVideoConverter implements VideoConverter {
             grabber.close();
             recorder.close();
         } catch (IOException e) {
-            throw new VideoConversionException("Failed to release FFmpeg resources", e);
+            System.out.println("Failed to close resources");
         }
     }
 }
