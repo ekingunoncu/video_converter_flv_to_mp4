@@ -30,75 +30,77 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/converter")
 public class VideoConverterController {
 
-    private final VideoConverter videoConverter;
+        private final VideoConverter videoConverter;
 
-    /**
-     * Converts a video file synchronously and returns the converted file as a byte
-     * array resource.
-     * 
-     * @param file              The video file to convert.
-     * @param convertionOptions The conversion options to use.
-     * @return A response entity containing the converted file as a byte array
-     *         resource.
-     * @throws IOException              If an I/O error occurs.
-     * @throws VideoConversionException If an error occurs during the video
-     *                                  conversion process.
-     */
-    @PostMapping
-    public ResponseEntity<ByteArrayResource> convertVideo(@RequestParam("file") MultipartFile file,
-            @RequestParam("audioProfile") String audioProfile,
-            @RequestParam("videoProfile") String videoProfile,
-            @RequestParam("outputVideoFormat") String outputVideoFormat) throws IOException, VideoConversionException {
+        /**
+         * Converts a video file synchronously and returns the converted file as a byte
+         * array resource.
+         * 
+         * @param file              The video file to convert.
+         * @param convertionOptions The conversion options to use.
+         * @return A response entity containing the converted file as a byte array
+         *         resource.
+         * @throws IOException              If an I/O error occurs.
+         * @throws VideoConversionException If an error occurs during the video
+         *                                  conversion process.
+         */
+        @PostMapping
+        public ResponseEntity<ByteArrayResource> convertVideo(@RequestParam("file") MultipartFile file,
+                        @RequestParam("audioProfile") AudioProfile audioProfile,
+                        @RequestParam("videoProfile") VideoProfile videoProfile,
+                        @RequestParam("outputVideoFormat") VideoFormat outputVideoFormat)
+                        throws IOException, VideoConversionException {
 
-        ConvertionOptions convertionOptions = ConvertionOptions.builder()
-                .audioProfile(AudioProfile.valueOf(audioProfile))
-                .videoProfile(VideoProfile.valueOf(videoProfile))
-                .outputVideoFormat(VideoFormat.valueOf(outputVideoFormat))
-                .build();
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
+                ConvertionOptions convertionOptions = ConvertionOptions.builder()
+                                .audioProfile(audioProfile)
+                                .videoProfile(videoProfile)
+                                .outputVideoFormat(outputVideoFormat)
+                                .build();
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
 
-        byte[] output = videoConverter.convert(inputStream, convertionOptions);
+                byte[] output = videoConverter.convert(inputStream, convertionOptions);
 
-        ByteArrayResource resource = new ByteArrayResource(output);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getOriginalFilename());
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(output.length)
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource);
-    }
+                ByteArrayResource resource = new ByteArrayResource(output);
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getOriginalFilename());
+                return ResponseEntity.ok()
+                                .headers(headers)
+                                .contentLength(output.length)
+                                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                                .body(resource);
+        }
 
-    /**
-     * Converts a video file asynchronously and returns a response to the user
-     * immediately.
-     * 
-     * @param file              The video file to convert.
-     * @param convertionOptions The conversion options to use.
-     * @return A response entity containing a message indicating that the conversion
-     *         process has started, or an error message if the thread pool is at
-     *         capacity.
-     * @throws VideoConversionException If an error occurs during the video
-     *                                  conversion process.
-     * @throws IOException              If an I/O error occurs.
-     */
-    @PostMapping("/async")
-    public ResponseEntity<String> convertVideoAsync(@RequestParam("file") MultipartFile file,
-            @RequestParam("audioProfile") String audioProfile,
-            @RequestParam("videoProfile") String videoProfile,
-            @RequestParam("outputVideoFormat") String outputVideoFormat) throws IOException, VideoConversionException {
-        ConvertionOptions convertionOptions = ConvertionOptions.builder()
-                .audioProfile(AudioProfile.valueOf(audioProfile))
-                .videoProfile(VideoProfile.valueOf(videoProfile))
-                .outputVideoFormat(VideoFormat.valueOf(outputVideoFormat))
-                .build();
+        /**
+         * Converts a video file asynchronously and returns a response to the user
+         * immediately.
+         * 
+         * @param file              The video file to convert.
+         * @param convertionOptions The conversion options to use.
+         * @return A response entity containing a message indicating that the conversion
+         *         process has started, or an error message if the thread pool is at
+         *         capacity.
+         * @throws VideoConversionException If an error occurs during the video
+         *                                  conversion process.
+         * @throws IOException              If an I/O error occurs.
+         */
+        @PostMapping("/async")
+        public ResponseEntity<String> convertVideoAsync(@RequestParam("file") MultipartFile file,
+                        @RequestParam("audioProfile") AudioProfile audioProfile,
+                        @RequestParam("videoProfile") VideoProfile videoProfile,
+                        @RequestParam("outputVideoFormat") VideoFormat outputVideoFormat)
+                        throws IOException, VideoConversionException {
+                ConvertionOptions convertionOptions = ConvertionOptions.builder()
+                                .audioProfile(audioProfile)
+                                .videoProfile(videoProfile)
+                                .outputVideoFormat(outputVideoFormat)
+                                .build();
 
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
-        // Start the conversion in a separate thread using the fileConversionExecutor
-        // bean
-        videoConverter.asyncConvert(inputStream, convertionOptions);
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
+                // Start the conversion in a separate thread using the fileConversionExecutor
+                // bean
+                videoConverter.asyncConvert(inputStream, convertionOptions);
 
-        // Return a response to the user immediately
-        return ResponseEntity.ok("Your convert process started");
-    }
+                // Return a response to the user immediately
+                return ResponseEntity.ok("Your convert process started");
+        }
 }
