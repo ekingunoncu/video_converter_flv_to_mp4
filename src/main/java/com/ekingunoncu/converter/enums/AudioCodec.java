@@ -1,13 +1,13 @@
-/**
- * An enumeration representing common audio codecs with their corresponding
- * codec ID in avcodec.
- */
 package com.ekingunoncu.converter.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bytedeco.ffmpeg.global.avcodec;
 
+/**
+ * An enumeration representing common audio codecs with their corresponding
+ * codec ID in avcodec.
+ */
 @Getter
 @AllArgsConstructor
 public enum AudioCodec {

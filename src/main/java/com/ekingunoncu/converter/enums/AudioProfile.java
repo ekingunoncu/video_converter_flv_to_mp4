@@ -1,12 +1,12 @@
-/**
-An enumeration that defines different audio qualities with their associated parameters.
-These parameters include the audio codec, bit rate, audio quality, and number of audio channels.
-*/
 package com.ekingunoncu.converter.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+An enumeration that defines different audio qualities with their associated parameters.
+These parameters include the audio codec, bit rate, audio quality, and number of audio channels.
+*/
 @Getter
 @AllArgsConstructor
 public enum AudioProfile {
