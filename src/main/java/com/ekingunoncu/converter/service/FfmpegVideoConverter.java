@@ -59,13 +59,14 @@ public class FfmpegVideoConverter implements VideoConverter {
             recorder.setFormat(convertionOptions.getOutputVideoFormat().getValue());
             recorder.setVideoOption("preset", "ultrafast");
             recorder.setVideoOption("tune", "zerolatency");
-
+            // Set the MOV muxer flags
+            recorder.setOption("movflags", "frag_keyframe+empty_moov");
             convertFrames(grabber, recorder);
             grabber.stop();
             recorder.stop();
             return outputStream.toByteArray();
         } catch (Exception e) {
-            throw new VideoConversionException("Failed to convert video", e);
+            throw new VideoConversionException("Failed to convert video " + e.getMessage(), e);
         } finally {
             closeResources(grabber, recorder);
         }
