@@ -17,7 +17,6 @@ import com.ekingunoncu.converter.enums.AudioProfile;
 import com.ekingunoncu.converter.enums.VideoFormat;
 import com.ekingunoncu.converter.enums.VideoProfile;
 import com.ekingunoncu.converter.exception.VideoConversionException;
-import com.ekingunoncu.converter.model.ConvertionOptions;
 import com.ekingunoncu.converter.service.VideoConverter;
 
 import lombok.RequiredArgsConstructor;
@@ -50,15 +49,10 @@ public class VideoConverterController {
                         @RequestParam("videoProfile") VideoProfile videoProfile,
                         @RequestParam("outputVideoFormat") VideoFormat outputVideoFormat)
                         throws IOException, VideoConversionException {
-
-                ConvertionOptions convertionOptions = ConvertionOptions.builder()
-                                .audioProfile(audioProfile)
-                                .videoProfile(videoProfile)
-                                .outputVideoFormat(outputVideoFormat)
-                                .build();
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
 
-                byte[] output = videoConverter.convert(inputStream, convertionOptions);
+                byte[] output = videoConverter.convert(inputStream, audioProfile, videoProfile,
+                                outputVideoFormat);
 
                 ByteArrayResource resource = new ByteArrayResource(output);
                 HttpHeaders headers = new HttpHeaders();
@@ -89,16 +83,10 @@ public class VideoConverterController {
                         @RequestParam("videoProfile") VideoProfile videoProfile,
                         @RequestParam("outputVideoFormat") VideoFormat outputVideoFormat)
                         throws IOException, VideoConversionException {
-                ConvertionOptions convertionOptions = ConvertionOptions.builder()
-                                .audioProfile(audioProfile)
-                                .videoProfile(videoProfile)
-                                .outputVideoFormat(outputVideoFormat)
-                                .build();
-
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
                 // Start the conversion in a separate thread using the fileConversionExecutor
                 // bean
-                videoConverter.asyncConvert(inputStream, convertionOptions);
+                videoConverter.asyncConvert(inputStream, audioProfile, videoProfile, outputVideoFormat);
 
                 // Return a response to the user immediately
                 return ResponseEntity.ok("Your convert process started");
