@@ -24,13 +24,17 @@ public class S3UploadService {
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
 
+    @Value("${aws.s3.region}")
+    private String region;
+
     @Autowired
     public S3UploadService(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
     }
 
     /**
-     * Uploads the given file bytes to Amazon S3 with the given file name and returns
+     * Uploads the given file bytes to Amazon S3 with the given file name and
+     * returns
      * the URL of the uploaded file.
      * 
      * @param fileBytes The byte array of the file to upload.
@@ -50,6 +54,7 @@ public class S3UploadService {
         amazonS3.putObject(putObjectRequest);
 
         // Returns the URL of the uploaded file.
-        return amazonS3.getUrl(bucketName, fileName).toString();
+        return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, fileName);
+    
     }
 }
