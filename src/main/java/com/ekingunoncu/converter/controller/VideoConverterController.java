@@ -83,11 +83,7 @@ public class VideoConverterController {
                         @RequestParam("videoProfile") VideoProfile videoProfile,
                         @RequestParam("outputVideoFormat") VideoFormat outputVideoFormat)
                         throws IOException, VideoConversionException {
-                ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
-                // Start the conversion in a separate thread using the fileConversionExecutor
-                // bean
-                videoConverter.asyncConvert(inputStream, audioProfile, videoProfile, outputVideoFormat);
-
+                videoConverter.asyncConvert(file, audioProfile, videoProfile, outputVideoFormat);
                 // Return a response to the user immediately
                 return ResponseEntity.ok("Your convert process started");
         }

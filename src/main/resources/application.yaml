@@ -1,0 +1,14 @@
+spring:
+  rest-template:
+    request-timeout: 900000
+  servlet:
+    multipart:
+      max-file-size: 50MB
+aws:
+  s3:
+    bucket-name: video-converter-flv-to-mp4
+    region: eu-west-1
+
+slack: 
+  channel: C04PVJBD89M
+  token: -token-

@@ -2,6 +2,9 @@ package com.ekingunoncu.converter.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ekingunoncu.converter.enums.AudioProfile;
 import com.ekingunoncu.converter.enums.VideoFormat;
@@ -33,15 +36,16 @@ public interface VideoConverter {
          * Starts a video file conversion asynchronously, using the provided input
          * stream and conversion options.
          * 
-         * @param inputStream       The input stream of the video file to convert.
+         * @param multipartFile     The input file of the video to convert.
          * @param convertionOptions The conversion options to use.
          * @throws VideoConversionException If an error occurs during the conversion
          *                                  process.
          * @throws FileNotFoundException    If the input file cannot be found.
+         * @throws IOException
          */
-        public void asyncConvert(ByteArrayInputStream inputStream, AudioProfile audioProfile,
+        public void asyncConvert(MultipartFile multipartFile, AudioProfile audioProfile,
                         VideoProfile videoProfile,
                         VideoFormat outputVideoFormat)
-                        throws FileNotFoundException, VideoConversionException;
+                        throws FileNotFoundException, VideoConversionException, IOException;
 
 }

@@ -11,6 +11,8 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.ekingunoncu.converter.enums.AudioProfile;
 import com.ekingunoncu.converter.enums.VideoFormat;
 import com.ekingunoncu.converter.enums.VideoProfile;
@@ -28,7 +30,10 @@ class FfmpegVideoConverterTest {
      */
     @BeforeEach
     public void setUp() {
-        converter = new FfmpegVideoConverter();
+        converter = new FfmpegVideoConverter(new S3UploadService(AmazonS3ClientBuilder.standard()
+                .withCredentials(new DefaultAWSCredentialsProviderChain())
+                .withRegion("video-converter-flv-to-mp4")
+                .build()), null);
     }
 
     /**

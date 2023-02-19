@@ -4,6 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import org.bytedeco.ffmpeg.avcodec.AVCodec;
 import org.bytedeco.ffmpeg.global.avcodec;
@@ -13,17 +16,25 @@ import org.bytedeco.javacv.FFmpegLogCallback;
 import org.bytedeco.javacv.Frame;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ekingunoncu.converter.enums.AudioProfile;
 import com.ekingunoncu.converter.enums.VideoFormat;
 import com.ekingunoncu.converter.enums.VideoProfile;
 import com.ekingunoncu.converter.exception.VideoConversionException;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * Service class for converting video files using FFmpeg.
  */
 @Service
+@RequiredArgsConstructor
 public class FfmpegVideoConverter implements VideoConverter {
+
+    private final S3UploadService s3UploadService;
+
+    private final SlackService slackService;
 
     /**
      * Converts a video file to the specified format and returns the converted file
@@ -75,14 +86,28 @@ public class FfmpegVideoConverter implements VideoConverter {
      * @param convertionOptions The conversion options to use.
      * @throws VideoConversionException If an error occurs during the video
      *                                  conversion process.
-     * @throws FileNotFoundException    If the input file is not found.
+     * @throws IOException
      */
     @Async("fileConversionExecutor")
-    public void asyncConvert(ByteArrayInputStream inputStream, AudioProfile audioProfile,
+    public void asyncConvert(MultipartFile file, AudioProfile audioProfile,
             VideoProfile videoProfile,
             VideoFormat outputVideoFormat)
-            throws FileNotFoundException, VideoConversionException {
-        convert(inputStream, audioProfile, videoProfile, outputVideoFormat);
+            throws VideoConversionException, IOException {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
+        String originalFileName = file.getOriginalFilename();
+        byte[] output = convert(inputStream, audioProfile, videoProfile, outputVideoFormat);
+        String fileUrl = s3UploadService.uploadFileToS3(output, generateFileName(originalFileName, outputVideoFormat.getValue()));
+        slackService.sendMessage("Your file is ready " + fileUrl);
+    }
+
+    private String generateFileName(String originalFileName, String outputVideoFormat) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS");
+        String filename = Objects.nonNull(originalFileName)
+                ? originalFileName.substring(0, originalFileName.lastIndexOf('.'))
+                : "converted";
+        String formattedDateTime = now.format(formatter);
+        return String.format("%s_%s.%s", filename, formattedDateTime, outputVideoFormat);
     }
 
     /**
