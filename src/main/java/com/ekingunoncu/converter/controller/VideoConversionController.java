@@ -46,13 +46,12 @@ public class VideoConversionController {
         @PostMapping
         public ResponseEntity<ByteArrayResource> convertVideo(@RequestParam("file") MultipartFile file,
                         @RequestParam("audioProfile") AudioProfile audioProfile,
-                        @RequestParam("videoProfile") VideoProfile videoProfile,
-                        @RequestParam("outputVideoFormat") VideoFormat outputVideoFormat)
+                        @RequestParam("videoProfile") VideoProfile videoProfile)
                         throws IOException, VideoConversionException {
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
 
                 byte[] output = videoConverter.convert(inputStream, audioProfile, videoProfile,
-                                outputVideoFormat);
+                                videoProfile.getVideoFormat());
 
                 ByteArrayResource resource = new ByteArrayResource(output);
                 HttpHeaders headers = new HttpHeaders();
@@ -80,10 +79,9 @@ public class VideoConversionController {
         @PostMapping("/async")
         public ResponseEntity<String> convertVideoAsync(@RequestParam("file") MultipartFile file,
                         @RequestParam("audioProfile") AudioProfile audioProfile,
-                        @RequestParam("videoProfile") VideoProfile videoProfile,
-                        @RequestParam("outputVideoFormat") VideoFormat outputVideoFormat)
+                        @RequestParam("videoProfile") VideoProfile videoProfile)
                         throws IOException, VideoConversionException {
-                videoConverter.asyncConvert(file, audioProfile, videoProfile, outputVideoFormat);
+                videoConverter.asyncConvert(file, audioProfile, videoProfile, videoProfile.getVideoFormat());
                 // Return a response to the user immediately
                 return ResponseEntity.ok("Your convert process started");
         }

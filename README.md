@@ -13,14 +13,12 @@ Converter Application is a simple Spring Boot application that uses the JavaCV l
           - file - A MultipartFile representing the input video file to convert.
           - audioProfile - An AudioProfile enum representing the audio profile to use in the output video.
           - videoProfile - A VideoProfile enum representing the video profile to use in the output video.
-          - outputVideoFormat - A VideoFormat enum representing the output video format to use.
   
     - Example Request
     ```
         curl -X POST -F "file=@jimmy_page_solo.flv" \
             -F "audioProfile=AAC_HIGH" \
             -F "videoProfile=MP4_MPEG4_HIGH" \
-            -F "outputVideoFormat=MP4" \
             "http://localhost:8080/convert" \
             -o output.mp4
     ```
@@ -48,14 +46,12 @@ And here is the input video in FLV format:
           - file - A MultipartFile representing the input video file to convert.
           - audioProfile - An AudioProfile enum representing the audio profile to use in the output video.
           - videoProfile - A VideoProfile enum representing the video profile to use in the output video.
-          - outputVideoFormat - A VideoFormat enum representing the output video format to use.
   
     - Example Request
     ```
         curl -X POST -F "file=@jimmy_page_solo.flv" \
             -F "audioProfile=AAC_HIGH" \
             -F "videoProfile=MP4_MPEG4_HIGH" \
-            -F "outputVideoFormat=MP4" \
             "http://localhost:8080/convert/async" 
     ```
 

@@ -42,8 +42,7 @@ class VideoConversionControllerIntegrationTest {
         mockMvc.perform(multipart("/convert")
                 .file(file)
                 .param("audioProfile", "AAC_LOW")
-                .param("videoProfile", "MP4_H264_LOW")
-                .param("outputVideoFormat", "MP4"))
+                .param("videoProfile", "MP4_H264_LOW"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
     }
