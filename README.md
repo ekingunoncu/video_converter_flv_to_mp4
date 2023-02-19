@@ -55,9 +55,9 @@ And here is the input video in FLV format:
             "http://localhost:8080/convert/async" 
     ```
 
-- On video processing done it will send the storage url to slack channel:
+  - On video processing done it will send the file url to slack channel:
 
-  <img src="https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/slack_on_done.png" width="80%" />
+    <img src="https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/slack_on_done.png" width="80%" />
 
 # Whats next?
 
