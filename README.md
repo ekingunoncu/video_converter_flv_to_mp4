@@ -25,6 +25,20 @@ Converter Application is a simple Spring Boot application that uses the JavaCV l
             -o output.mp4
     ```
 
+Here is an example of converted video in MP4 format:
+
+<a href="https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/output.mp4">
+    <img src="https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/thumbnail.png" width="45%" />
+</a>
+
+
+And here is the input video in FLV format:
+
+<a href="https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/jimmy_page_solo.flv">
+    <img src="https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/thumbnail.png" width="45%" />
+</a>
+
+
 * POST /convert/async
   
   This method is an HTTP POST endpoint that takes in a video file, along with conversion options, and starts the conversion process in a separate thread. The result of the conversion is not returned in the HTTP response, but a message is returned to the user indicating that the conversion process has started and the result link will be send through slack channel when process is done.
@@ -45,10 +59,25 @@ Converter Application is a simple Spring Boot application that uses the JavaCV l
             "http://localhost:8080/convert/async" 
     ```
 
-Here is an example of converted video in MP4 format:
+- On video processing done it will send the storage url to slack channel:
 
-[![Jimmy Page Solo MP4](https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/thumbnail.png)](https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/output.mp4)
+  <img src="https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/slack_on_done.png" width="80%" />
 
-And here is the input video in FLV format:
+# Whats next?
 
-[![Jimmy Page Solo FLV](https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/thumbnail.png)](https://video-converter-flv-to-mp4.s3.eu-west-1.amazonaws.com/jimmy_page_solo.flv)
+ * Auto-scaling
+   * k8s
+      * Containerize the Spring Boot API as a Docker image.
+      * Push the Docker image to a container registry.
+      * Create a Kubernetes deployment YAML file that defines the desired state of the deployment, including the Docker image, the number of replicas, and any necessary environment variables or configuration.
+      * Use Helm to create a Helm chart for the deployment, which defines the values for the Kubernetes deployment and other resources.
+      * Deploy the Helm chart to the Kubernetes cluster using the Helm CLI, which will create the deployment, replicas, and any other resources defined in the Helm chart.
+      * Monitor the deployment and scale it up or down as needed, either manually or by using an autoscaler.
+  * High Availability 
+    * RabbitMQ 
+      * Containerize the Spring app and RabbitMQ using Docker
+      * Use Spring Cloud Stream to connect the app to the RabbitMQ broker
+      * Consume messages for conversion (if any of the process fails message will stay in queue for another consumer to consume it to convert)
+    * We can also use AWS SQS which is serverless equilevent of RabbitMQ
+  * CI/CD Automation
+  * Load testing
