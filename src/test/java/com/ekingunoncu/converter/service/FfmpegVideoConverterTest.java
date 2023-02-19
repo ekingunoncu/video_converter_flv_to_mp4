@@ -1,13 +1,13 @@
-package com.ekingunoncu.converter;
+package com.ekingunoncu.converter.service;
 
+import static com.ekingunoncu.converter.utils.TestUtils.loadInputBytesFromFile;
+import static com.ekingunoncu.converter.utils.TestUtils.saveOutputBytesToFile;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +15,11 @@ import com.ekingunoncu.converter.enums.AudioProfile;
 import com.ekingunoncu.converter.enums.VideoFormat;
 import com.ekingunoncu.converter.enums.VideoProfile;
 import com.ekingunoncu.converter.exception.VideoConversionException;
-import com.ekingunoncu.converter.model.ConvertionOptions;
-import com.ekingunoncu.converter.service.FfmpegVideoConverter;
 
 /**
-
-Tests for {@link FfmpegVideoConverter} class
-*/
+ * 
+ * Tests for {@link FfmpegVideoConverter} class
+ */
 public class FfmpegVideoConverterTest {
     private FfmpegVideoConverter converter;
 
@@ -48,20 +46,12 @@ public class FfmpegVideoConverterTest {
     public void testConvert_shouldConvertVideoWithGivenOptions()
             throws VideoConversionException, IOException, InterruptedException {
         // Given
-        byte[] inputBytes = loadInputBytesFromFile("input.flv");
+        byte[] inputBytes = loadInputBytesFromFile("jimmy_page_solo.flv");
         for (AudioProfile audioProfile : AudioProfile.values()) {
             for (VideoProfile videoProfile : VideoProfile.values()) {
-
-                ConvertionOptions conversionOptions = ConvertionOptions.builder()
-                        .audioProfile(audioProfile)
-                        .videoProfile(videoProfile)
-                        .outputVideoFormat(videoProfile.getVideoFormat())
-                        .build();
-
-                System.out.println("Converting video with options: " + conversionOptions);
                 // When
-                byte[] outputBytes = converter.convert(new ByteArrayInputStream(inputBytes), conversionOptions);
-
+                byte[] outputBytes = converter.convert(new ByteArrayInputStream(inputBytes), audioProfile, videoProfile,
+                        videoProfile.getVideoFormat());
                 // Then
                 assertNotNull(outputBytes, "Output bytes should not be null");
                 assertTrue(outputBytes.length > 0, "Output bytes should not be empty");
@@ -73,21 +63,6 @@ public class FfmpegVideoConverterTest {
             }
 
         }
-    }
-
-    /**
-     * 
-     * Loads the bytes of the file with the specified filename from the classpath,
-     * and returns them as a byte array.
-     * 
-     * @param fileName the name of the file to load from the classpath
-     * @return a byte array containing the contents of the file
-     * @throws IOException if an I/O error occurs while reading the file
-     */
-    private byte[] loadInputBytesFromFile(String fileName) throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
-        return FileUtils.readFileToByteArray(file);
     }
 
     /**
@@ -105,16 +80,4 @@ public class FfmpegVideoConverterTest {
                 + videoFormat.getValue();
     }
 
-    /**
-     * 
-     * Saves the given byte array to a file with the specified name.
-     * 
-     * @param outputBytes    the byte array to write to the file
-     * @param outputFileName the name of the file to write to
-     * @throws IOException if an I/O error occurs while writing the file
-     */
-    private void saveOutputBytesToFile(byte[] outputBytes, String outputFileName) throws IOException {
-        File outputFile = new File(outputFileName);
-        FileUtils.writeByteArrayToFile(outputFile, outputBytes);
-    }
 }
