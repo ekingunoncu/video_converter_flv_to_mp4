@@ -55,8 +55,7 @@ class FfmpegVideoConverterTest {
         for (AudioProfile audioProfile : AudioProfile.values()) {
             for (VideoProfile videoProfile : VideoProfile.values()) {
                 // When
-                byte[] outputBytes = converter.convert(new ByteArrayInputStream(inputBytes), audioProfile, videoProfile,
-                        videoProfile.getVideoFormat());
+                byte[] outputBytes = converter.convert(new ByteArrayInputStream(inputBytes), audioProfile, videoProfile);
                 // Then
                 assertNotNull(outputBytes, "Output bytes should not be null");
                 assertTrue(outputBytes.length > 0, "Output bytes should not be empty");

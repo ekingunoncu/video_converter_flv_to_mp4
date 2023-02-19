@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ekingunoncu.converter.enums.AudioProfile;
-import com.ekingunoncu.converter.enums.VideoFormat;
 import com.ekingunoncu.converter.enums.VideoProfile;
 import com.ekingunoncu.converter.exception.VideoConversionException;
 import com.ekingunoncu.converter.service.VideoConverter;
@@ -35,8 +34,9 @@ public class VideoConversionController {
          * Converts a video file synchronously and returns the converted file as a byte
          * array resource.
          * 
-         * @param file              The video file to convert.
-         * @param convertionOptions The conversion options to use.
+         * @param file         The video file to convert.
+         * @param audioProfile The audio profile to use for the conversion.
+         * @param videoProfile The video profile to use for the conversion.
          * @return A response entity containing the converted file as a byte array
          *         resource.
          * @throws IOException              If an I/O error occurs.
@@ -50,8 +50,7 @@ public class VideoConversionController {
                         throws IOException, VideoConversionException {
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
 
-                byte[] output = videoConverter.convert(inputStream, audioProfile, videoProfile,
-                                videoProfile.getVideoFormat());
+                byte[] output = videoConverter.convert(inputStream, audioProfile, videoProfile);
 
                 ByteArrayResource resource = new ByteArrayResource(output);
                 HttpHeaders headers = new HttpHeaders();
@@ -67,8 +66,9 @@ public class VideoConversionController {
          * Converts a video file asynchronously and returns a response to the user
          * immediately.
          * 
-         * @param file              The video file to convert.
-         * @param convertionOptions The conversion options to use.
+         * @param file         The video file to convert.
+         * @param audioProfile The audio profile to use for the conversion.
+         * @param videoProfile The video profile to use for the conversion.
          * @return A response entity containing a message indicating that the conversion
          *         process has started, or an error message if the thread pool is at
          *         capacity.
@@ -81,7 +81,7 @@ public class VideoConversionController {
                         @RequestParam("audioProfile") AudioProfile audioProfile,
                         @RequestParam("videoProfile") VideoProfile videoProfile)
                         throws IOException, VideoConversionException {
-                videoConverter.asyncConvert(file, audioProfile, videoProfile, videoProfile.getVideoFormat());
+                videoConverter.asyncConvert(file, audioProfile, videoProfile);
                 // Return a response to the user immediately
                 return ResponseEntity.ok("Your convert process started");
         }

@@ -23,14 +23,12 @@ public interface VideoConverter {
      * @param inputStream       The input stream for the video file to be converted.
      * @param audioProfile      The audio profile to use for the conversion.
      * @param videoProfile      The video profile to use for the conversion.
-     * @param outputVideoFormat The format to convert the video to.
      * @return A byte array containing the converted video file.
      * @throws VideoConversionException If an error occurs during the video
      *                                  conversion process.
      * @throws FileNotFoundException    If the input file is not found.
      */
-    byte[] convert(ByteArrayInputStream inputStream, AudioProfile audioProfile, VideoProfile videoProfile,
-            VideoFormat outputVideoFormat) throws VideoConversionException, FileNotFoundException;
+    byte[] convert(ByteArrayInputStream inputStream, AudioProfile audioProfile, VideoProfile videoProfile) throws VideoConversionException, FileNotFoundException;
 
     /**
      * Converts a video file asynchronously.
@@ -38,12 +36,10 @@ public interface VideoConverter {
      * @param multipartFile     The video file to be converted.
      * @param audioProfile      The audio profile to use for the conversion.
      * @param videoProfile      The video profile to use for the conversion.
-     * @param outputVideoFormat The format to convert the video to.
      * @throws VideoConversionException If an error occurs during the video
      *                                  conversion process.
      * @throws IOException              If an I/O error occurs.
      */
-    public void asyncConvert(MultipartFile multipartFile, AudioProfile audioProfile, VideoProfile videoProfile,
-            VideoFormat outputVideoFormat) throws VideoConversionException, IOException;
+    public void asyncConvert(MultipartFile multipartFile, AudioProfile audioProfile, VideoProfile videoProfile) throws VideoConversionException, IOException;
 
 }

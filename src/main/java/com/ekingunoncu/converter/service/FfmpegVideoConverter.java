@@ -12,14 +12,12 @@ import org.bytedeco.ffmpeg.avcodec.AVCodec;
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
-import org.bytedeco.javacv.FFmpegLogCallback;
 import org.bytedeco.javacv.Frame;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ekingunoncu.converter.enums.AudioProfile;
-import com.ekingunoncu.converter.enums.VideoFormat;
 import com.ekingunoncu.converter.enums.VideoProfile;
 import com.ekingunoncu.converter.exception.VideoConversionException;
 
@@ -41,7 +39,8 @@ public class FfmpegVideoConverter implements VideoConverter {
      * as a byte array.
      * 
      * @param inputStream       The input stream for the video file to be converted.
-     * @param convertionOptions The conversion options to use.
+     * @param audioProfile      The audio profile to use for the conversion.
+     * @param videoProfile      The video profile to use for the conversion.
      * @return A byte array containing the converted video file.
      * @throws VideoConversionException If an error occurs during the video
      *                                  conversion process.
@@ -49,8 +48,7 @@ public class FfmpegVideoConverter implements VideoConverter {
      */
     @Override
     public byte[] convert(ByteArrayInputStream inputStream, AudioProfile audioProfile,
-            VideoProfile videoProfile,
-            VideoFormat outputVideoFormat)
+            VideoProfile videoProfile)
             throws VideoConversionException, FileNotFoundException {
         FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputStream);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -62,7 +60,7 @@ public class FfmpegVideoConverter implements VideoConverter {
             grabber.start();
             setAudioSettings(recorder, audioProfile);
             setVideoSettings(recorder, videoProfile);
-            recorder.setFormat(outputVideoFormat.getValue());
+            recorder.setFormat(videoProfile.getVideoFormat().getValue());
             recorder.setVideoOption("preset", "ultrafast");
             recorder.setVideoOption("tune", "zerolatency");
             // Set the MOV muxer flags
@@ -83,20 +81,20 @@ public class FfmpegVideoConverter implements VideoConverter {
      * pool.
      * 
      * @param inputStream       The input stream for the video file to be converted.
-     * @param convertionOptions The conversion options to use.
+     * @param audioProfile      The audio profile to use for the conversion.
+     * @param videoProfile      The video profile to use for the conversion.
      * @throws VideoConversionException If an error occurs during the video
      *                                  conversion process.
      * @throws IOException
      */
     @Async("fileConversionExecutor")
     public void asyncConvert(MultipartFile file, AudioProfile audioProfile,
-            VideoProfile videoProfile,
-            VideoFormat outputVideoFormat)
+            VideoProfile videoProfile)
             throws VideoConversionException, IOException {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getBytes());
         String originalFileName = file.getOriginalFilename();
-        byte[] output = convert(inputStream, audioProfile, videoProfile, outputVideoFormat);
-        String fileUrl = s3UploadService.uploadFileToS3(output, generateFileName(originalFileName, outputVideoFormat.getValue()));
+        byte[] output = convert(inputStream, audioProfile, videoProfile);
+        String fileUrl = s3UploadService.uploadFileToS3(output, generateFileName(originalFileName, videoProfile.getVideoFormat().getValue()));
         slackService.sendMessage("Your file is ready " + fileUrl);
     }
 
