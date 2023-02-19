@@ -2,6 +2,8 @@
 
 Converter Application is a simple Spring Boot application that uses the JavaCV library to convert flv files to mp4. The application provides a REST API for uploading a video file and converting it to a different format, codec, or resolution.
 
+* [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ekingunoncu_video_converter_flv_to_mp4&metric=alert_status)](https://sonarcloud.io/summary/overall?id=ekingunoncu_video_converter_flv_to_mp4)
+ 
 * POST /convert
   
   This method is an HTTP POST endpoint that takes in a video file, along with conversion options, and returns a converted video file as a byte array resource. The conversion is done synchronously, and the result is returned in the HTTP response.
