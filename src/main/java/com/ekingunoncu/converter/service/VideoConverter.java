@@ -12,40 +12,38 @@ import com.ekingunoncu.converter.enums.VideoProfile;
 import com.ekingunoncu.converter.exception.VideoConversionException;
 
 /**
- * An interface for a video converter service that can convert video files and
- * start conversions asynchronously.
+ * Interface for converting video files using FFmpeg.
  */
 public interface VideoConverter {
 
-        /**
-         * Converts a video file and returns the result as a byte array.
-         * 
-         * @param inputStream       The input stream of the video file to convert.
-         * @param convertionOptions The conversion options to use.
-         * @return The converted video file as a byte array.
-         * @throws VideoConversionException If an error occurs during the conversion
-         *                                  process.
-         * @throws FileNotFoundException    If the input file cannot be found.
-         */
-        byte[] convert(ByteArrayInputStream inputStream, AudioProfile audioProfile,
-                        VideoProfile videoProfile,
-                        VideoFormat outputVideoFormat)
-                        throws VideoConversionException, FileNotFoundException;
+    /**
+     * Converts a video file to the specified format and returns the converted file
+     * as a byte array.
+     * 
+     * @param inputStream       The input stream for the video file to be converted.
+     * @param audioProfile      The audio profile to use for the conversion.
+     * @param videoProfile      The video profile to use for the conversion.
+     * @param outputVideoFormat The format to convert the video to.
+     * @return A byte array containing the converted video file.
+     * @throws VideoConversionException If an error occurs during the video
+     *                                  conversion process.
+     * @throws FileNotFoundException    If the input file is not found.
+     */
+    byte[] convert(ByteArrayInputStream inputStream, AudioProfile audioProfile, VideoProfile videoProfile,
+            VideoFormat outputVideoFormat) throws VideoConversionException, FileNotFoundException;
 
-        /**
-         * Starts a video file conversion asynchronously, using the provided input
-         * stream and conversion options.
-         * 
-         * @param multipartFile     The input file of the video to convert.
-         * @param convertionOptions The conversion options to use.
-         * @throws VideoConversionException If an error occurs during the conversion
-         *                                  process.
-         * @throws FileNotFoundException    If the input file cannot be found.
-         * @throws IOException
-         */
-        public void asyncConvert(MultipartFile multipartFile, AudioProfile audioProfile,
-                        VideoProfile videoProfile,
-                        VideoFormat outputVideoFormat)
-                        throws VideoConversionException, IOException;
+    /**
+     * Converts a video file asynchronously.
+     * 
+     * @param multipartFile     The video file to be converted.
+     * @param audioProfile      The audio profile to use for the conversion.
+     * @param videoProfile      The video profile to use for the conversion.
+     * @param outputVideoFormat The format to convert the video to.
+     * @throws VideoConversionException If an error occurs during the video
+     *                                  conversion process.
+     * @throws IOException              If an I/O error occurs.
+     */
+    public void asyncConvert(MultipartFile multipartFile, AudioProfile audioProfile, VideoProfile videoProfile,
+            VideoFormat outputVideoFormat) throws VideoConversionException, IOException;
 
 }

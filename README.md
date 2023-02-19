@@ -81,3 +81,4 @@ And here is the input video in FLV format:
     * We can also use AWS SQS which is serverless equilevent of RabbitMQ
   * CI/CD Automation
   * Load testing
+  * Lambda / SQS stack would be great fit

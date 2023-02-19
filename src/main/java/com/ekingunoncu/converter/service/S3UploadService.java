@@ -12,6 +12,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import lombok.Setter;
 
+/**
+ * Service class for uploading files to Amazon S3.
+ */
 @Service
 @Setter
 public class S3UploadService {
@@ -26,14 +29,27 @@ public class S3UploadService {
         this.amazonS3 = amazonS3;
     }
 
+    /**
+     * Uploads the given file bytes to Amazon S3 with the given file name and returns
+     * the URL of the uploaded file.
+     * 
+     * @param fileBytes The byte array of the file to upload.
+     * @param fileName  The name of the file to upload.
+     * @return The URL of the uploaded file.
+     */
     public String uploadFileToS3(byte[] fileBytes, String fileName) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(fileBytes.length);
 
+        // Creates a PutObjectRequest with the specified bucket name, file name,
+        // file input stream, and metadata.
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName,
                 new ByteArrayInputStream(fileBytes), metadata);
 
+        // Uploads the file to Amazon S3.
         amazonS3.putObject(putObjectRequest);
+
+        // Returns the URL of the uploaded file.
         return amazonS3.getUrl(bucketName, fileName).toString();
     }
 }
