@@ -31,24 +31,6 @@ public enum VideoProfile {
 
     /**
      * Low quality with a width of 320 pixels, a height of 240 pixels,
-     * a frame rate of 25 frames per second, and a bit rate of 256Kbps.
-     */
-    FLV_H264_LOW(320, 240, 24, 256000, VideoCodec.H264, VideoFormat.FLV),
-
-    /**
-     * Medium quality with a width of 640 pixels, a height of 480 pixels,
-     * a frame rate of 24 frames per second, and a bit rate of 512Kbps.
-     */
-    FLV_MP4_H264_MEDIUM(640, 480, 24, 512000, VideoCodec.H264, VideoFormat.FLV),
-
-    /**
-     * High quality with a width of 1280 pixels, a height of 720 pixels,
-     * a frame rate of 24 frames per second, and a bit rate of 1Mbps.
-     */
-    FLV_MP4_H264_HIGH(1280, 720, 24, 1000000, VideoCodec.H264, VideoFormat.FLV),
-
-    /**
-     * Low quality with a width of 320 pixels, a height of 240 pixels,
      * a frame rate of 24 frames per second, and a bit rate of 256Kbps.
      */
     MP4_MPEG4_LOW(320, 240, 24, 256000, VideoCodec.MPEG4, VideoFormat.MP4),
