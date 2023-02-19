@@ -1,7 +1,6 @@
 package com.ekingunoncu.converter.service;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,7 @@ public class S3UploadService {
         this.amazonS3 = amazonS3;
     }
 
-    public String uploadFileToS3(byte[] fileBytes, String fileName) throws IOException {
+    public String uploadFileToS3(byte[] fileBytes, String fileName) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(fileBytes.length);
 

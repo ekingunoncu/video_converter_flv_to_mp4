@@ -18,7 +18,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 @ExtendWith(MockitoExtension.class)
-public class S3UploadServiceTest {
+class S3UploadServiceTest {
 
     @Mock
     private AmazonS3 amazonS3;
@@ -40,7 +40,7 @@ public class S3UploadServiceTest {
      * @throws IOException if an I/O error occurs while uploading the file
      */
     @Test
-    public void testUploadFileToS3() throws IOException {
+    void testUploadFileToS3() throws IOException {
         // Create a byte array to simulate a file
         byte[] fileBytes = "test file".getBytes();
         // Create a file name

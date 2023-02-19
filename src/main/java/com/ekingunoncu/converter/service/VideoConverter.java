@@ -46,6 +46,6 @@ public interface VideoConverter {
         public void asyncConvert(MultipartFile multipartFile, AudioProfile audioProfile,
                         VideoProfile videoProfile,
                         VideoFormat outputVideoFormat)
-                        throws FileNotFoundException, VideoConversionException, IOException;
+                        throws VideoConversionException, IOException;
 
 }
