@@ -20,7 +20,7 @@ import com.ekingunoncu.converter.exception.VideoConversionException;
  * 
  * Tests for {@link FfmpegVideoConverter} class
  */
-public class FfmpegVideoConverterTest {
+class FfmpegVideoConverterTest {
     private FfmpegVideoConverter converter;
 
     /**
@@ -43,7 +43,7 @@ public class FfmpegVideoConverterTest {
      * @throws InterruptedException     if the thread is interrupted while sleeping
      */
     @Test
-    public void testConvert_shouldConvertVideoWithGivenOptions()
+    void testConvert_shouldConvertVideoWithGivenOptions()
             throws VideoConversionException, IOException, InterruptedException {
         // Given
         byte[] inputBytes = loadInputBytesFromFile("jimmy_page_solo.flv");

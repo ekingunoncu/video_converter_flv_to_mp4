@@ -26,13 +26,6 @@ import com.ekingunoncu.converter.exception.VideoConversionException;
 public class FfmpegVideoConverter implements VideoConverter {
 
     /**
-     * Enables logging for FFmpeg.
-     */
-    {
-        FFmpegLogCallback.set();
-    }
-
-    /**
      * Converts a video file to the specified format and returns the converted file
      * as a byte array.
      * 
