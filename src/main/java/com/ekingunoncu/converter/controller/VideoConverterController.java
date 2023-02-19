@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/converter")
+@RequestMapping("/convert")
 public class VideoConverterController {
 
         private final VideoConverter videoConverter;
