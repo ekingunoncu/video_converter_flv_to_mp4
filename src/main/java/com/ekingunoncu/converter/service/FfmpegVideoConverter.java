@@ -15,9 +15,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.ekingunoncu.converter.enums.AudioProfile;
+import com.ekingunoncu.converter.enums.VideoFormat;
 import com.ekingunoncu.converter.enums.VideoProfile;
 import com.ekingunoncu.converter.exception.VideoConversionException;
-import com.ekingunoncu.converter.model.ConvertionOptions;
 
 /**
  * Service class for converting video files using FFmpeg.
@@ -44,19 +44,21 @@ public class FfmpegVideoConverter implements VideoConverter {
      * @throws FileNotFoundException    If the input file is not found.
      */
     @Override
-    public byte[] convert(ByteArrayInputStream inputStream, ConvertionOptions convertionOptions)
+    public byte[] convert(ByteArrayInputStream inputStream, AudioProfile audioProfile,
+            VideoProfile videoProfile,
+            VideoFormat outputVideoFormat)
             throws VideoConversionException, FileNotFoundException {
         FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputStream);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(outputStream,
-                convertionOptions.getVideoProfile().getWidth(),
-                convertionOptions.getVideoProfile().getHeight());
+                videoProfile.getWidth(),
+                videoProfile.getHeight());
 
         try {
             grabber.start();
-            setAudioSettings(recorder, convertionOptions.getAudioProfile());
-            setVideoSettings(recorder, convertionOptions.getVideoProfile());
-            recorder.setFormat(convertionOptions.getOutputVideoFormat().getValue());
+            setAudioSettings(recorder, audioProfile);
+            setVideoSettings(recorder, videoProfile);
+            recorder.setFormat(outputVideoFormat.getValue());
             recorder.setVideoOption("preset", "ultrafast");
             recorder.setVideoOption("tune", "zerolatency");
             // Set the MOV muxer flags
@@ -83,9 +85,11 @@ public class FfmpegVideoConverter implements VideoConverter {
      * @throws FileNotFoundException    If the input file is not found.
      */
     @Async("fileConversionExecutor")
-    public void asyncConvert(ByteArrayInputStream inputStream, ConvertionOptions convertionOptions)
+    public void asyncConvert(ByteArrayInputStream inputStream, AudioProfile audioProfile,
+            VideoProfile videoProfile,
+            VideoFormat outputVideoFormat)
             throws FileNotFoundException, VideoConversionException {
-        convert(inputStream, convertionOptions);
+        convert(inputStream, audioProfile, videoProfile, outputVideoFormat);
     }
 
     /**
